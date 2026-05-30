@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Configuración - Enhanced Shogun</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Configuración de Enhanced Shogun</h1>
+
+        <div class="form-group">
+            <label for="currentUser">Nombre de Usuario (Tu nombre en el juego)</label>
+            <input type="text" id="currentUser" placeholder="Introduce tu nombre">
+        </div>
+
+        <div class="form-group config-box">
+            <label class="checkbox-label">
+                <input type="checkbox" id="enableSpyReport">
+                <span>Habilitar Webhook para Reportes de Espionaje</span>
+            </label>
+            <div class="input-container">
+                <label for="spyReportWebhookURL" class="sub-label">URL del Webhook (Espionajes)</label>
+                <input type="text" id="spyReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+        </div>
+
+        <div class="form-group config-box">
+            <label class="checkbox-label">
+                <input type="checkbox" id="enableDownloadSpyReport">
+                <span>Mostrar botón para descargar reporte de espionaje (.htm)</span>
+            </label>
+        </div>
+
+        <div class="form-group config-box">
+            <label class="checkbox-label">
+                <input type="checkbox" id="enableBattleReport">
+                <span>Habilitar Webhook para Reportes de Batalla</span>
+            </label>
+            <div class="input-container">
+                <label for="battleReportWebhookURL" class="sub-label">URL del Webhook (Batallas)</label>
+                <input type="text" id="battleReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+        </div>
+
+        <div class="form-group config-box">
+            <label class="checkbox-label">
+                <input type="checkbox" id="enableCopyBattleReport">
+                <span>Mostrar botón para copiar enlace de batalla</span>
+            </label>
+        </div>
+
+        <button id="saveBtn">Guardar Configuración</button>
+        <div id="status" class="status"></div>
+    </div>
+    <script src="options.js"></script>
+</body>
+
+</html>

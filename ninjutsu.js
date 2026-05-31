@@ -17,10 +17,51 @@ function createNinjutsuWebhookBtn(reportId) {
         btn.textContent = 'Generando...';
         btn.disabled = true;
 
+        const rect = reportElement.getBoundingClientRect();
+
+        // Fijar el ancho en el DOM real temporalmente
+        const originalWidth = reportElement.style.width;
+        const originalMaxWidth = reportElement.style.maxWidth;
+        reportElement.style.width = rect.width + 'px';
+        reportElement.style.maxWidth = rect.width + 'px';
+
+        const computedStyle = window.getComputedStyle(reportElement);
+
         domtoimage.toPng(reportElement, {
-            copyDefaultStyles: false
+            copyDefaultStyles: false,
+            adjustClonedNode: (node, clonedNode) => {
+                // Si el nodo clonado es un elemento HTML
+                if (clonedNode.nodeType === 1) {
+                    const tag = clonedNode.tagName.toUpperCase();
+                    const text = clonedNode.textContent.trim();
+
+                    // Si el texto es corto (menos de 40 caracteres), asumimos que es una insignia, nombre o valor 
+                    // que NO debería saltar de línea bajo ninguna circunstancia.
+                    if (text.length > 0 && text.length < 40) {
+                        // Aplicamos nowrap a elementos en línea comunes
+                        if (['SPAN', 'B', 'STRONG', 'I', 'EM', 'A', 'LABEL'].includes(tag)) {
+                            clonedNode.style.whiteSpace = 'nowrap';
+                        }
+                        // Aplicamos nowrap a DIVs y Ps solo si son "hojas" (sin otros elementos HTML dentro)
+                        else if (['DIV', 'P'].includes(tag) && clonedNode.children.length === 0) {
+                            clonedNode.style.whiteSpace = 'nowrap';
+                        }
+                    }
+                }
+            },
+            width: rect.width,
+            height: rect.height,
+            style: {
+                width: rect.width + 'px',
+                height: rect.height + 'px',
+                margin: '0'
+            }
         })
             .then(function (dataUrl) {
+                // Restaurar el DOM real
+                reportElement.style.width = originalWidth;
+                reportElement.style.maxWidth = originalMaxWidth;
+
                 btn.textContent = 'Enviando...';
 
                 chrome.runtime.sendMessage({
@@ -41,6 +82,10 @@ function createNinjutsuWebhookBtn(reportId) {
                 });
             })
             .catch(function (error) {
+                // Restaurar el DOM real en caso de error
+                reportElement.style.width = originalWidth;
+                reportElement.style.maxWidth = originalMaxWidth;
+
                 console.error('oops, algo salió mal al generar la imagen!', error);
                 btn.textContent = 'Error';
                 setTimeout(() => {

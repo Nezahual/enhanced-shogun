@@ -2,6 +2,9 @@
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.getElementById('saveBtn').addEventListener('click', saveOptions);
+document.getElementById('changelogBtn').addEventListener('click', () => {
+    chrome.tabs.create({ url: 'changelog.html' });
+});
 
 // Habilitar/Deshabilitar inputs según los checkboxes y validar
 document.getElementById('enableSpyReport').addEventListener('change', (e) => {
@@ -88,6 +91,7 @@ function saveOptions() {
     const enableNinjutsuReport = document.getElementById('enableNinjutsuReport').checked;
     const ninjutsuReportWebhookURL = document.getElementById('ninjutsuReportWebhookURL').value.trim();
     const enableDownloadNinjutsuReport = document.getElementById('enableDownloadNinjutsuReport').checked;
+    const autoShowChangelog = document.getElementById('autoShowChangelog').checked;
 
     chrome.storage.local.set({
         currentUser: currentUser,
@@ -99,7 +103,8 @@ function saveOptions() {
         enableCopyBattleReport: enableCopyBattleReport,
         enableNinjutsuReport: enableNinjutsuReport,
         ninjutsuReportWebhookURL: ninjutsuReportWebhookURL,
-        enableDownloadNinjutsuReport: enableDownloadNinjutsuReport
+        enableDownloadNinjutsuReport: enableDownloadNinjutsuReport,
+        autoShowChangelog: autoShowChangelog
     }, () => {
         // Actualizar el estado para informar al usuario
         const status = document.getElementById('status');
@@ -124,7 +129,8 @@ function restoreOptions() {
         enableCopyBattleReport: false,
         enableNinjutsuReport: false,
         ninjutsuReportWebhookURL: '',
-        enableDownloadNinjutsuReport: false
+        enableDownloadNinjutsuReport: false,
+        autoShowChangelog: true
     }, (items) => {
         document.getElementById('currentUser').value = items.currentUser;
 
@@ -145,6 +151,7 @@ function restoreOptions() {
         document.getElementById('ninjutsuReportWebhookURL').disabled = !items.enableNinjutsuReport;
 
         document.getElementById('enableDownloadNinjutsuReport').checked = items.enableDownloadNinjutsuReport;
+        document.getElementById('autoShowChangelog').checked = items.autoShowChangelog;
 
         validateInputs();
     });

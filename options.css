@@ -116,6 +116,14 @@ button:disabled {
     cursor: not-allowed;
 }
 
+.secondary-btn {
+    background-color: #4f545c;
+}
+
+.secondary-btn:hover {
+    background-color: #686d73;
+}
+
 .status {
     margin-top: 15px;
     text-align: center;

@@ -24,8 +24,17 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 });
 
 // Evento que se dispara al instalar o actualizar la extensión
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
   console.log("Enhanced Shogun Extension instalada correctamente.");
+  
+  // Mostrar página de novedades tras instalación o actualización
+  if (details.reason === 'install' || details.reason === 'update') {
+    chrome.storage.local.get({ autoShowChangelog: true }, (items) => {
+      if (items.autoShowChangelog) {
+        chrome.tabs.create({ url: 'changelog.html' });
+      }
+    });
+  }
 });
 
 // Escuchamos los mensajes que vienen desde content.js

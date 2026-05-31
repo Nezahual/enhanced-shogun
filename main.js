@@ -14,6 +14,11 @@ const observer = new MutationObserver(() => {
             injectBattleBtns();
         }
     }
+    if (config.enableNinjutsuReport || config.enableDownloadNinjutsuReport) {
+        if (typeof injectNinjutsuBtns === 'function') {
+            injectNinjutsuBtns();
+        }
+    }
 });
 
 // Observamos todo el body para detectar cuando el framework (React/Vue/etc.)

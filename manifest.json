@@ -20,9 +20,11 @@
         "https://shogunsreturn.com/*"
       ],
       "js": [
+        "libs/dom-to-image-more.min.js",
         "shared.js",
         "spies.js",
         "battles.js",
+        "ninjutsu.js",
         "main.js"
       ],
       "css": [

@@ -2,12 +2,14 @@
 
 let spyReportWebhookURL = "";
 let battleReportWebhookURL = "";
+let ninjutsuReportWebhookURL = "";
 let currentUser = "";
 
 // Cargamos la configuración inicialmente
-chrome.storage.local.get(['currentUser', 'spyReportWebhookURL', 'battleReportWebhookURL']).then((result) => {
+chrome.storage.local.get(['currentUser', 'spyReportWebhookURL', 'battleReportWebhookURL', 'ninjutsuReportWebhookURL']).then((result) => {
   spyReportWebhookURL = result.spyReportWebhookURL || "";
   battleReportWebhookURL = result.battleReportWebhookURL || "";
+  ninjutsuReportWebhookURL = result.ninjutsuReportWebhookURL || "";
   currentUser = result.currentUser || "Usuario Desconocido";
 });
 
@@ -16,6 +18,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName === 'local') {
     if (changes.spyReportWebhookURL) spyReportWebhookURL = changes.spyReportWebhookURL.newValue || "";
     if (changes.battleReportWebhookURL) battleReportWebhookURL = changes.battleReportWebhookURL.newValue || "";
+    if (changes.ninjutsuReportWebhookURL) ninjutsuReportWebhookURL = changes.ninjutsuReportWebhookURL.newValue || "";
     if (changes.currentUser) currentUser = changes.currentUser.newValue || "Usuario Desconocido";
   }
 });
@@ -96,6 +99,56 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
 
     // Retornar true indica que la respuesta será asíncrona
+    return true;
+  }
+
+  if (request.action === "sendNinjutsuMissionReport") {
+    console.log("Service Worker recibió el mensaje. Procesando envío de reporte ninjutsu a Discord...");
+
+    // La imagen viene en formato base64 Data URL (data:image/png;base64,...)
+    const base64Data = request.imageData.split(',')[1];
+    
+    // Convertir de base64 a Blob
+    const byteCharacters = atob(base64Data);
+    const byteArrays = [];
+    
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+        const slice = byteCharacters.slice(offset, offset + 512);
+        
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+    
+    const imageBlob = new Blob(byteArrays, { type: 'image/png' });
+
+    const formData = new FormData();
+    formData.append("file", imageBlob, 'NinjutsuReport.png');
+
+    formData.append('payload_json', JSON.stringify({
+      content: `**${currentUser}** ha compartido un reporte de misión ninjutsu:`
+    }));
+
+    fetch(ninjutsuReportWebhookURL, {
+      method: "POST",
+      body: formData
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+        console.log("Reporte ninjutsu enviado con éxito a Discord");
+        sendResponse({ success: true, message: "Reporte ninjutsu enviado exitosamente" });
+      })
+      .catch(error => {
+        console.error("Fallo al enviar reporte ninjutsu a Discord:", error);
+        sendResponse({ success: false, message: "Error al enviar", error: error.toString() });
+      });
+
     return true;
   }
 });

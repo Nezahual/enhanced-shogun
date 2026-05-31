@@ -14,9 +14,15 @@ document.getElementById('enableBattleReport').addEventListener('change', (e) => 
     validateInputs();
 });
 
+document.getElementById('enableNinjutsuReport').addEventListener('change', (e) => {
+    document.getElementById('ninjutsuReportWebhookURL').disabled = !e.target.checked;
+    validateInputs();
+});
+
 // Validar al escribir en los inputs
 document.getElementById('spyReportWebhookURL').addEventListener('input', validateInputs);
 document.getElementById('battleReportWebhookURL').addEventListener('input', validateInputs);
+document.getElementById('ninjutsuReportWebhookURL').addEventListener('input', validateInputs);
 
 function validateInputs() {
     const saveBtn = document.getElementById('saveBtn');
@@ -28,6 +34,9 @@ function validateInputs() {
 
     const enableBattle = document.getElementById('enableBattleReport').checked;
     const battleUrl = document.getElementById('battleReportWebhookURL').value.trim();
+
+    const enableNinjutsu = document.getElementById('enableNinjutsuReport').checked;
+    const ninjutsuUrl = document.getElementById('ninjutsuReportWebhookURL').value.trim();
 
     let errorMessage = "";
 
@@ -43,6 +52,14 @@ function validateInputs() {
         if (!battleUrl) {
             errorMessage = "Debes rellenar la URL del Webhook de reportes de batalla.";
         } else if (!battleUrl.startsWith(discordPrefix)) {
+            errorMessage = "La URL del webhook debe empezar por 'https://discord.com/api/webhooks/'.";
+        }
+    }
+
+    if (!errorMessage && enableNinjutsu) {
+        if (!ninjutsuUrl) {
+            errorMessage = "Debes rellenar la URL del Webhook de reportes de ninjutsu.";
+        } else if (!ninjutsuUrl.startsWith(discordPrefix)) {
             errorMessage = "La URL del webhook debe empezar por 'https://discord.com/api/webhooks/'.";
         }
     }
@@ -68,6 +85,9 @@ function saveOptions() {
     const enableBattleReport = document.getElementById('enableBattleReport').checked;
     const battleReportWebhookURL = document.getElementById('battleReportWebhookURL').value.trim();
     const enableCopyBattleReport = document.getElementById('enableCopyBattleReport').checked;
+    const enableNinjutsuReport = document.getElementById('enableNinjutsuReport').checked;
+    const ninjutsuReportWebhookURL = document.getElementById('ninjutsuReportWebhookURL').value.trim();
+    const enableDownloadNinjutsuReport = document.getElementById('enableDownloadNinjutsuReport').checked;
 
     chrome.storage.local.set({
         currentUser: currentUser,
@@ -76,7 +96,10 @@ function saveOptions() {
         enableDownloadSpyReport: enableDownloadSpyReport,
         enableBattleReport: enableBattleReport,
         battleReportWebhookURL: battleReportWebhookURL,
-        enableCopyBattleReport: enableCopyBattleReport
+        enableCopyBattleReport: enableCopyBattleReport,
+        enableNinjutsuReport: enableNinjutsuReport,
+        ninjutsuReportWebhookURL: ninjutsuReportWebhookURL,
+        enableDownloadNinjutsuReport: enableDownloadNinjutsuReport
     }, () => {
         // Actualizar el estado para informar al usuario
         const status = document.getElementById('status');
@@ -98,7 +121,10 @@ function restoreOptions() {
         enableDownloadSpyReport: false,
         enableBattleReport: false,
         battleReportWebhookURL: '',
-        enableCopyBattleReport: false
+        enableCopyBattleReport: false,
+        enableNinjutsuReport: false,
+        ninjutsuReportWebhookURL: '',
+        enableDownloadNinjutsuReport: false
     }, (items) => {
         document.getElementById('currentUser').value = items.currentUser;
 
@@ -113,6 +139,12 @@ function restoreOptions() {
         document.getElementById('battleReportWebhookURL').disabled = !items.enableBattleReport;
 
         document.getElementById('enableCopyBattleReport').checked = items.enableCopyBattleReport;
+
+        document.getElementById('enableNinjutsuReport').checked = items.enableNinjutsuReport;
+        document.getElementById('ninjutsuReportWebhookURL').value = items.ninjutsuReportWebhookURL;
+        document.getElementById('ninjutsuReportWebhookURL').disabled = !items.enableNinjutsuReport;
+
+        document.getElementById('enableDownloadNinjutsuReport').checked = items.enableDownloadNinjutsuReport;
 
         validateInputs();
     });

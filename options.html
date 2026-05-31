@@ -52,6 +52,25 @@
             </label>
         </div>
 
+        <div class="form-group config-box">
+            <label class="checkbox-label">
+                <input type="checkbox" id="enableNinjutsuReport">
+                <span>Habilitar Webhook para Reportes de Ninjutsu</span>
+            </label>
+            <div class="input-container">
+                <label for="ninjutsuReportWebhookURL" class="sub-label">URL del Webhook (Ninjutsu)</label>
+                <input type="text" id="ninjutsuReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+        </div>
+
+        <div class="form-group config-box">
+            <label class="checkbox-label">
+                <input type="checkbox" id="enableDownloadNinjutsuReport">
+                <span>Mostrar botón para descargar reporte de ninjutsu (PNG)</span>
+            </label>
+        </div>
+
+
         <button id="saveBtn">Guardar Configuración</button>
         <div id="status" class="status"></div>
     </div>

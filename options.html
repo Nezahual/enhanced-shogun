@@ -11,75 +11,97 @@
     <div class="container">
         <h1>Configuración de Enhanced Shogun</h1>
 
-        <div class="form-group">
-            <label for="currentUser">Nombre de Usuario (Tu nombre en el juego)</label>
-            <input type="text" id="currentUser" placeholder="Introduce tu nombre">
-        </div>
+        <div class="grid-container">
+            <!-- Tarjeta General -->
+            <div class="card">
+                <h2>General</h2>
+                <div class="form-group">
+                    <label for="currentUser" class="label-with-icon">
+                        Nombre de usuario (tu nombre en el juego o discord)
+                        <span class="info-icon"
+                            title="Solo sirve para mostrar el nombre del usuario que envía el reporte.">i</span>
+                    </label>
+                    <input type="text" id="currentUser" placeholder="Introduce tu nombre">
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="autoShowChangelog">
+                        <span>Abrir las novedades automáticamente tras actualizar la extensión</span>
+                    </label>
+                </div>
+            </div>
 
-        <div class="form-group config-box">
-            <label class="checkbox-label">
-                <input type="checkbox" id="enableSpyReport">
-                <span>Habilitar Webhook para Reportes de Espionaje</span>
-            </label>
-            <div class="input-container">
-                <label for="spyReportWebhookURL" class="sub-label">URL del Webhook (Espionajes)</label>
-                <input type="text" id="spyReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
+            <!-- Tarjeta Espionaje -->
+            <div class="card">
+                <h2>Reportes de Espionaje</h2>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enableSpyReport">
+                        <span>Habilitar Webhook</span>
+                    </label>
+                    <div class="input-container">
+                        <label for="spyReportWebhookURL" class="sub-label">URL del Webhook</label>
+                        <input type="text" id="spyReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enableDownloadSpyReport">
+                        <span>Mostrar botón para descargar reporte (.htm)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Tarjeta Batallas -->
+            <div class="card">
+                <h2>Reportes de Batalla</h2>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enableBattleReport">
+                        <span>Habilitar Webhook</span>
+                    </label>
+                    <div class="input-container">
+                        <label for="battleReportWebhookURL" class="sub-label">URL del Webhook</label>
+                        <input type="text" id="battleReportWebhookURL"
+                            placeholder="https://discord.com/api/webhooks/...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enableCopyBattleReport">
+                        <span>Mostrar botón para copiar enlace</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Tarjeta Ninjutsu -->
+            <div class="card">
+                <h2>Reportes de misiones Ninjutsu</h2>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enableNinjutsuReport">
+                        <span>Habilitar Webhook</span>
+                    </label>
+                    <div class="input-container">
+                        <label for="ninjutsuReportWebhookURL" class="sub-label">URL del Webhook</label>
+                        <input type="text" id="ninjutsuReportWebhookURL"
+                            placeholder="https://discord.com/api/webhooks/...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enableDownloadNinjutsuReport">
+                        <span>Mostrar botón para descargar reporte (PNG)</span>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="form-group config-box">
-            <label class="checkbox-label">
-                <input type="checkbox" id="enableDownloadSpyReport">
-                <span>Mostrar botón para descargar reporte de espionaje (.htm)</span>
-            </label>
+        <div class="actions">
+            <button id="saveBtn">Guardar Configuración</button>
+            <button id="changelogBtn" class="secondary-btn">Changelog (v1.3)</button>
         </div>
 
-        <div class="form-group config-box">
-            <label class="checkbox-label">
-                <input type="checkbox" id="enableBattleReport">
-                <span>Habilitar Webhook para Reportes de Batalla</span>
-            </label>
-            <div class="input-container">
-                <label for="battleReportWebhookURL" class="sub-label">URL del Webhook (Batallas)</label>
-                <input type="text" id="battleReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
-            </div>
-        </div>
-
-        <div class="form-group config-box">
-            <label class="checkbox-label">
-                <input type="checkbox" id="enableCopyBattleReport">
-                <span>Mostrar botón para copiar enlace de batalla</span>
-            </label>
-        </div>
-
-        <div class="form-group config-box">
-            <label class="checkbox-label">
-                <input type="checkbox" id="enableNinjutsuReport">
-                <span>Habilitar Webhook para Reportes de Ninjutsu</span>
-            </label>
-            <div class="input-container">
-                <label for="ninjutsuReportWebhookURL" class="sub-label">URL del Webhook (Ninjutsu)</label>
-                <input type="text" id="ninjutsuReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
-            </div>
-        </div>
-
-        <div class="form-group config-box">
-            <label class="checkbox-label">
-                <input type="checkbox" id="enableDownloadNinjutsuReport">
-                <span>Mostrar botón para descargar reporte de ninjutsu (PNG)</span>
-            </label>
-        </div>
-
-        <div class="form-group config-box">
-            <label class="checkbox-label">
-                <input type="checkbox" id="autoShowChangelog">
-                <span>Abrir las novedades automáticamente tras actualizar la extensión</span>
-            </label>
-        </div>
-
-
-        <button id="saveBtn">Guardar Configuración</button>
-        <button id="changelogBtn" class="secondary-btn">Ver Novedades (v1.3)</button>
         <div id="status" class="status"></div>
     </div>
     <script src="options.js"></script>

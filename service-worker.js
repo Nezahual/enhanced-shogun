@@ -160,4 +160,35 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     return true;
   }
+
+  if (request.action === "sendNinjutsuHtmReport") {
+    console.log("Service Worker recibió el mensaje. Procesando envío de reporte ninjutsu (HTM) a Discord...");
+
+    const htmlBlob = new Blob([request.html], { type: 'text/html' });
+
+    const formData = new FormData();
+    formData.append("file", htmlBlob, 'NinjutsuReport.htm');
+
+    formData.append('payload_json', JSON.stringify({
+      content: `**${currentUser}** ha compartido un reporte de misión ninjutsu (HTM):`
+    }));
+
+    fetch(ninjutsuReportWebhookURL, {
+      method: "POST",
+      body: formData
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+        console.log("Reporte ninjutsu (HTM) enviado con éxito a Discord");
+        sendResponse({ success: true, message: "Reporte ninjutsu enviado exitosamente" });
+      })
+      .catch(error => {
+        console.error("Fallo al enviar reporte ninjutsu (HTM) a Discord:", error);
+        sendResponse({ success: false, message: "Error al enviar", error: error.toString() });
+      });
+
+    return true;
+  }
 });

@@ -2,15 +2,17 @@
 console.log("Enhanced Shogun: shared.js inyectado en la página.");
 
 // Mantenemos el estado de la configuración en memoria
-let config = { enableSpyReport: false, enableDownloadSpyReport: false, enableBattleReport: false, enableCopyBattleReport: false, enableNinjutsuReport: false, enableDownloadNinjutsuReport: false };
+let config = { enableSpyReport: false, enableDownloadSpyReport: false, enableBattleReport: false, enableCopyBattleReport: false, enableNinjutsuReportPng: false, enableDownloadNinjutsuReportPng: false, enableNinjutsuReportHtm: false, enableDownloadNinjutsuReportHtm: false };
 
-chrome.storage.local.get(['enableSpyReport', 'enableDownloadSpyReport', 'enableBattleReport', 'enableCopyBattleReport', 'enableNinjutsuReport', 'enableDownloadNinjutsuReport'], (items) => {
+chrome.storage.local.get(['enableSpyReport', 'enableDownloadSpyReport', 'enableBattleReport', 'enableCopyBattleReport', 'enableNinjutsuReportPng', 'enableDownloadNinjutsuReportPng', 'enableNinjutsuReportHtm', 'enableDownloadNinjutsuReportHtm'], (items) => {
     config.enableSpyReport = items.enableSpyReport || false;
     config.enableDownloadSpyReport = items.enableDownloadSpyReport || false;
     config.enableBattleReport = items.enableBattleReport || false;
     config.enableCopyBattleReport = items.enableCopyBattleReport || false;
-    config.enableNinjutsuReport = items.enableNinjutsuReport || false;
-    config.enableDownloadNinjutsuReport = items.enableDownloadNinjutsuReport || false;
+    config.enableNinjutsuReportPng = items.enableNinjutsuReportPng || false;
+    config.enableDownloadNinjutsuReportPng = items.enableDownloadNinjutsuReportPng || false;
+    config.enableNinjutsuReportHtm = items.enableNinjutsuReportHtm || false;
+    config.enableDownloadNinjutsuReportHtm = items.enableDownloadNinjutsuReportHtm || false;
 });
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -19,7 +21,9 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
         if (changes.enableDownloadSpyReport) config.enableDownloadSpyReport = changes.enableDownloadSpyReport.newValue;
         if (changes.enableBattleReport) config.enableBattleReport = changes.enableBattleReport.newValue;
         if (changes.enableCopyBattleReport) config.enableCopyBattleReport = changes.enableCopyBattleReport.newValue;
-        if (changes.enableNinjutsuReport) config.enableNinjutsuReport = changes.enableNinjutsuReport.newValue;
-        if (changes.enableDownloadNinjutsuReport) config.enableDownloadNinjutsuReport = changes.enableDownloadNinjutsuReport.newValue;
+        if (changes.enableNinjutsuReportPng) config.enableNinjutsuReportPng = changes.enableNinjutsuReportPng.newValue;
+        if (changes.enableDownloadNinjutsuReportPng) config.enableDownloadNinjutsuReportPng = changes.enableDownloadNinjutsuReportPng.newValue;
+        if (changes.enableNinjutsuReportHtm) config.enableNinjutsuReportHtm = changes.enableNinjutsuReportHtm.newValue;
+        if (changes.enableDownloadNinjutsuReportHtm) config.enableDownloadNinjutsuReportHtm = changes.enableDownloadNinjutsuReportHtm.newValue;
     }
 });

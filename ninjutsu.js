@@ -37,17 +37,43 @@ function generateNinjutsuImage(reportElement) {
     });
 }
 
-function createNinjutsuWebhookBtn(reportId) {
+function getNinjutsuHTML(reportElement) {
+    const clon = document.createElement('html');
+    const headClon = document.head.cloneNode(true);
+    const bodyClon = document.createElement('body');
+
+    Array.from(document.body.attributes).forEach(attr => bodyClon.setAttribute(attr.name, attr.value));
+
+    const reportClon = reportElement.cloneNode(true);
+    bodyClon.appendChild(reportClon);
+
+    clon.appendChild(headClon);
+    clon.appendChild(bodyClon);
+
+    const urlBase = new URL(window.location.href);
+    clon.querySelectorAll('[href], [src]').forEach(el => {
+        if (el.hasAttribute('href')) {
+            el.setAttribute('href', new URL(el.getAttribute('href'), urlBase).href);
+        }
+        if (el.hasAttribute('src')) {
+            el.setAttribute('src', new URL(el.getAttribute('src'), urlBase).href);
+        }
+    });
+
+    return '<!DOCTYPE html>\n' + clon.outerHTML;
+}
+
+function createNinjutsuPngWebhookBtn(reportId) {
     const btn = document.createElement('button');
     btn.className = 'shogun-custom-btn';
-    btn.textContent = '🚀 Enviar a Discord';
+    btn.textContent = '🚀 Enviar a Discord (.png)';
 
     btn.addEventListener('click', () => {
         const reportElement = document.getElementById(`message-ninjutsu-report-details-${reportId}`);
         if (!reportElement) {
             console.error(`No se encontró el elemento message-ninjutsu-report-details-${reportId}`);
             btn.textContent = 'Error';
-            setTimeout(() => { btn.textContent = '🚀 Enviar a Discord'; }, 2000);
+            setTimeout(() => { btn.textContent = '🚀 Enviar a Discord (.png)'; }, 2000);
             return;
         }
 
@@ -70,7 +96,7 @@ function createNinjutsuWebhookBtn(reportId) {
                     }
 
                     setTimeout(() => {
-                        btn.textContent = '🚀 Enviar a Discord';
+                        btn.textContent = '🚀 Enviar a Discord (.png)';
                         btn.disabled = false;
                     }, 2000);
                 });
@@ -79,7 +105,7 @@ function createNinjutsuWebhookBtn(reportId) {
                 console.error('oops, algo salió mal al generar la imagen!', error);
                 btn.textContent = 'Error';
                 setTimeout(() => {
-                    btn.textContent = '🚀 Enviar a Discord';
+                    btn.textContent = '🚀 Enviar a Discord (.png)';
                     btn.disabled = false;
                 }, 2000);
             });
@@ -88,10 +114,10 @@ function createNinjutsuWebhookBtn(reportId) {
     return btn;
 }
 
-function createDownloadNinjutsuBtn(reportId) {
+function createDownloadNinjutsuPngBtn(reportId) {
     const btn = document.createElement('button');
     btn.className = 'shogun-custom-btn';
-    btn.title = 'Descargar reporte (PNG)';
+    btn.title = 'Descargar reporte (.png)';
 
     const icon = document.createElement('img');
     icon.src = chrome.runtime.getURL('images/download16.png');
@@ -143,6 +169,98 @@ function createDownloadNinjutsuBtn(reportId) {
     return btn;
 }
 
+function createNinjutsuHtmWebhookBtn(reportId) {
+    const btn = document.createElement('button');
+    btn.className = 'shogun-custom-btn';
+    btn.textContent = '🚀 Enviar a Discord (.htm)';
+
+    btn.addEventListener('click', () => {
+        const reportElement = document.getElementById(`message-ninjutsu-report-details-${reportId}`);
+        if (!reportElement) {
+            console.error(`No se encontró el elemento message-ninjutsu-report-details-${reportId}`);
+            btn.textContent = 'Error';
+            setTimeout(() => { btn.textContent = '🚀 Enviar a Discord (.htm)'; }, 2000);
+            return;
+        }
+
+        btn.textContent = 'Enviando...';
+        btn.disabled = true;
+
+        const htmlCompleto = getNinjutsuHTML(reportElement);
+
+        chrome.runtime.sendMessage({
+            action: "sendNinjutsuHtmReport",
+            html: htmlCompleto
+        }, (response) => {
+            if (response && response.success) {
+                btn.textContent = '¡Enviado!';
+            } else {
+                btn.textContent = 'Error';
+                console.error('Error enviando a discord:', response ? response.error : 'Sin respuesta');
+            }
+
+            setTimeout(() => {
+                btn.textContent = '🚀 Enviar a Discord (.htm)';
+                btn.disabled = false;
+            }, 2000);
+        });
+    });
+
+    return btn;
+}
+
+function createDownloadNinjutsuHtmBtn(reportId) {
+    const btn = document.createElement('button');
+    btn.className = 'shogun-custom-btn';
+    btn.title = 'Descargar reporte (.htm)';
+
+    const icon = document.createElement('img');
+    icon.src = chrome.runtime.getURL('images/download16.png');
+    icon.style.width = '16px';
+    icon.style.height = '16px';
+    icon.style.display = 'block';
+
+    btn.appendChild(icon);
+
+    btn.style.padding = '6px 10px';
+    btn.style.marginLeft = '4px';
+
+    btn.addEventListener('click', () => {
+        const reportElement = document.getElementById(`message-ninjutsu-report-details-${reportId}`);
+        if (!reportElement) {
+            console.error(`No se encontró el elemento message-ninjutsu-report-details-${reportId}`);
+            return;
+        }
+
+        const originalBg = btn.style.backgroundColor;
+        btn.style.backgroundColor = '#ccc';
+        btn.disabled = true;
+
+        const htmlCompleto = getNinjutsuHTML(reportElement);
+        const blob = new Blob([htmlCompleto], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `NinjutsuReport-${reportId}.htm`;
+
+        document.body.appendChild(a);
+        a.click();
+
+        setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
+
+        btn.style.backgroundColor = '#43b581'; // Verde success
+        setTimeout(() => {
+            btn.style.backgroundColor = originalBg;
+            btn.disabled = false;
+        }, 1000);
+    });
+
+    return btn;
+}
+
 function injectNinjutsuBtns() {
     // Buscamos todos los botones que empiecen por "message-ninjutsu-review-submit-"
     const submitBtns = document.querySelectorAll('button[id^="message-ninjutsu-review-submit-"]');
@@ -162,12 +280,20 @@ function injectNinjutsuBtns() {
         btnContainer.style.alignItems = 'center';
         btnContainer.style.marginLeft = '8px'; // Espacio con el botón original
 
-        if (config.enableNinjutsuReport) {
-            btnContainer.appendChild(createNinjutsuWebhookBtn(reportId));
+        if (config.enableNinjutsuReportPng) {
+            btnContainer.appendChild(createNinjutsuPngWebhookBtn(reportId));
         }
 
-        if (config.enableDownloadNinjutsuReport) {
-            btnContainer.appendChild(createDownloadNinjutsuBtn(reportId));
+        if (config.enableDownloadNinjutsuReportPng) {
+            btnContainer.appendChild(createDownloadNinjutsuPngBtn(reportId));
+        }
+
+        if (config.enableNinjutsuReportHtm) {
+            btnContainer.appendChild(createNinjutsuHtmWebhookBtn(reportId));
+        }
+
+        if (config.enableDownloadNinjutsuReportHtm) {
+            btnContainer.appendChild(createDownloadNinjutsuHtmBtn(reportId));
         }
 
         if (btnContainer.childNodes.length > 0) {

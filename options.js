@@ -17,10 +17,15 @@ document.getElementById('enableBattleReport').addEventListener('change', (e) => 
     validateInputs();
 });
 
-document.getElementById('enableNinjutsuReport').addEventListener('change', (e) => {
-    document.getElementById('ninjutsuReportWebhookURL').disabled = !e.target.checked;
+document.getElementById('enableNinjutsuReportPng').addEventListener('change', updateNinjutsuWebhookState);
+document.getElementById('enableNinjutsuReportHtm').addEventListener('change', updateNinjutsuWebhookState);
+
+function updateNinjutsuWebhookState() {
+    const isPngChecked = document.getElementById('enableNinjutsuReportPng').checked;
+    const isHtmChecked = document.getElementById('enableNinjutsuReportHtm').checked;
+    document.getElementById('ninjutsuReportWebhookURL').disabled = !(isPngChecked || isHtmChecked);
     validateInputs();
-});
+}
 
 // Validar al escribir en los inputs
 document.getElementById('spyReportWebhookURL').addEventListener('input', validateInputs);
@@ -38,7 +43,7 @@ function validateInputs() {
     const enableBattle = document.getElementById('enableBattleReport').checked;
     const battleUrl = document.getElementById('battleReportWebhookURL').value.trim();
 
-    const enableNinjutsu = document.getElementById('enableNinjutsuReport').checked;
+    const enableNinjutsu = document.getElementById('enableNinjutsuReportPng').checked || document.getElementById('enableNinjutsuReportHtm').checked;
     const ninjutsuUrl = document.getElementById('ninjutsuReportWebhookURL').value.trim();
 
     let errorMessage = "";
@@ -88,9 +93,12 @@ function saveOptions() {
     const enableBattleReport = document.getElementById('enableBattleReport').checked;
     const battleReportWebhookURL = document.getElementById('battleReportWebhookURL').value.trim();
     const enableCopyBattleReport = document.getElementById('enableCopyBattleReport').checked;
-    const enableNinjutsuReport = document.getElementById('enableNinjutsuReport').checked;
+    
+    const enableNinjutsuReportPng = document.getElementById('enableNinjutsuReportPng').checked;
+    const enableNinjutsuReportHtm = document.getElementById('enableNinjutsuReportHtm').checked;
     const ninjutsuReportWebhookURL = document.getElementById('ninjutsuReportWebhookURL').value.trim();
-    const enableDownloadNinjutsuReport = document.getElementById('enableDownloadNinjutsuReport').checked;
+    const enableDownloadNinjutsuReportPng = document.getElementById('enableDownloadNinjutsuReportPng').checked;
+    const enableDownloadNinjutsuReportHtm = document.getElementById('enableDownloadNinjutsuReportHtm').checked;
     const autoShowChangelog = document.getElementById('autoShowChangelog').checked;
 
     chrome.storage.local.set({
@@ -101,9 +109,11 @@ function saveOptions() {
         enableBattleReport: enableBattleReport,
         battleReportWebhookURL: battleReportWebhookURL,
         enableCopyBattleReport: enableCopyBattleReport,
-        enableNinjutsuReport: enableNinjutsuReport,
+        enableNinjutsuReportPng: enableNinjutsuReportPng,
+        enableNinjutsuReportHtm: enableNinjutsuReportHtm,
         ninjutsuReportWebhookURL: ninjutsuReportWebhookURL,
-        enableDownloadNinjutsuReport: enableDownloadNinjutsuReport,
+        enableDownloadNinjutsuReportPng: enableDownloadNinjutsuReportPng,
+        enableDownloadNinjutsuReportHtm: enableDownloadNinjutsuReportHtm,
         autoShowChangelog: autoShowChangelog
     }, () => {
         // Actualizar el estado para informar al usuario
@@ -127,9 +137,11 @@ function restoreOptions() {
         enableBattleReport: false,
         battleReportWebhookURL: '',
         enableCopyBattleReport: false,
-        enableNinjutsuReport: false,
+        enableNinjutsuReportPng: false,
+        enableNinjutsuReportHtm: false,
         ninjutsuReportWebhookURL: '',
-        enableDownloadNinjutsuReport: false,
+        enableDownloadNinjutsuReportPng: false,
+        enableDownloadNinjutsuReportHtm: false,
         autoShowChangelog: true
     }, (items) => {
         document.getElementById('currentUser').value = items.currentUser;
@@ -146,11 +158,13 @@ function restoreOptions() {
 
         document.getElementById('enableCopyBattleReport').checked = items.enableCopyBattleReport;
 
-        document.getElementById('enableNinjutsuReport').checked = items.enableNinjutsuReport;
+        document.getElementById('enableNinjutsuReportPng').checked = items.enableNinjutsuReportPng;
+        document.getElementById('enableNinjutsuReportHtm').checked = items.enableNinjutsuReportHtm;
         document.getElementById('ninjutsuReportWebhookURL').value = items.ninjutsuReportWebhookURL;
-        document.getElementById('ninjutsuReportWebhookURL').disabled = !items.enableNinjutsuReport;
+        document.getElementById('ninjutsuReportWebhookURL').disabled = !(items.enableNinjutsuReportPng || items.enableNinjutsuReportHtm);
 
-        document.getElementById('enableDownloadNinjutsuReport').checked = items.enableDownloadNinjutsuReport;
+        document.getElementById('enableDownloadNinjutsuReportPng').checked = items.enableDownloadNinjutsuReportPng;
+        document.getElementById('enableDownloadNinjutsuReportHtm').checked = items.enableDownloadNinjutsuReportHtm;
         document.getElementById('autoShowChangelog').checked = items.autoShowChangelog;
 
         validateInputs();

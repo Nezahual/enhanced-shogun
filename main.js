@@ -14,7 +14,8 @@ const observer = new MutationObserver(() => {
             injectBattleBtns();
         }
     }
-    if (config.enableNinjutsuReport || config.enableDownloadNinjutsuReport) {
+    if (config.enableNinjutsuReportPng || config.enableDownloadNinjutsuReportPng
+        || config.enableNinjutsuReportHtm || config.enableDownloadNinjutsuReportHtm) {
         if (typeof injectNinjutsuBtns === 'function') {
             injectNinjutsuBtns();
         }

@@ -139,6 +139,13 @@ function injectSpyBtns() {
     }
 }
 
+function cleanResourceUrls(html) {
+    return html
+        .replace(/images\/logo-[a-fA-F0-9]+\.png(?:\?vsn=[a-zA-Z0-9_]+)?/g, 'images/logo.png')
+        .replace(/assets\/css\/app-[a-fA-F0-9]+\.css(?:\?vsn=[a-zA-Z0-9_]+)?/g, 'assets/css/app.css')
+        .replace(/assets\/js\/app-[a-fA-F0-9]+\.js(?:\?vsn=[a-zA-Z0-9_]+)?/g, 'assets/js/app.js');
+}
+
 function getFullHTML() {
     let clon = document.documentElement.cloneNode(true);
     const urlBase = new URL(window.location.href);
@@ -152,5 +159,5 @@ function getFullHTML() {
         }
     });
 
-    return clon.outerHTML;
+    return cleanResourceUrls(clon.outerHTML);
 }

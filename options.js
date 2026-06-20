@@ -27,10 +27,21 @@ function updateNinjutsuWebhookState() {
     validateInputs();
 }
 
+document.getElementById('enableArmyReportPng').addEventListener('change', updateArmyWebhookState);
+document.getElementById('enableArmyReportHtm').addEventListener('change', updateArmyWebhookState);
+
+function updateArmyWebhookState() {
+    const isPngChecked = document.getElementById('enableArmyReportPng').checked;
+    const isHtmChecked = document.getElementById('enableArmyReportHtm').checked;
+    document.getElementById('armyReportWebhookURL').disabled = !(isPngChecked || isHtmChecked);
+    validateInputs();
+}
+
 // Validar al escribir en los inputs
 document.getElementById('spyReportWebhookURL').addEventListener('input', validateInputs);
 document.getElementById('battleReportWebhookURL').addEventListener('input', validateInputs);
 document.getElementById('ninjutsuReportWebhookURL').addEventListener('input', validateInputs);
+document.getElementById('armyReportWebhookURL').addEventListener('input', validateInputs);
 
 function validateInputs() {
     const saveBtn = document.getElementById('saveBtn');
@@ -45,6 +56,9 @@ function validateInputs() {
 
     const enableNinjutsu = document.getElementById('enableNinjutsuReportPng').checked || document.getElementById('enableNinjutsuReportHtm').checked;
     const ninjutsuUrl = document.getElementById('ninjutsuReportWebhookURL').value.trim();
+
+    const enableArmy = document.getElementById('enableArmyReportPng').checked || document.getElementById('enableArmyReportHtm').checked;
+    const armyUrl = document.getElementById('armyReportWebhookURL').value.trim();
 
     let errorMessage = "";
 
@@ -68,6 +82,14 @@ function validateInputs() {
         if (!ninjutsuUrl) {
             errorMessage = "Debes rellenar la URL del Webhook de reportes de ninjutsu.";
         } else if (!ninjutsuUrl.startsWith(discordPrefix)) {
+            errorMessage = "La URL del webhook debe empezar por 'https://discord.com/api/webhooks/'.";
+        }
+    }
+
+    if (!errorMessage && enableArmy) {
+        if (!armyUrl) {
+            errorMessage = "Debes rellenar la URL del Webhook de reportes de ejércitos.";
+        } else if (!armyUrl.startsWith(discordPrefix)) {
             errorMessage = "La URL del webhook debe empezar por 'https://discord.com/api/webhooks/'.";
         }
     }
@@ -99,6 +121,13 @@ function saveOptions() {
     const ninjutsuReportWebhookURL = document.getElementById('ninjutsuReportWebhookURL').value.trim();
     const enableDownloadNinjutsuReportPng = document.getElementById('enableDownloadNinjutsuReportPng').checked;
     const enableDownloadNinjutsuReportHtm = document.getElementById('enableDownloadNinjutsuReportHtm').checked;
+    
+    const enableArmyReportPng = document.getElementById('enableArmyReportPng').checked;
+    const enableArmyReportHtm = document.getElementById('enableArmyReportHtm').checked;
+    const armyReportWebhookURL = document.getElementById('armyReportWebhookURL').value.trim();
+    const enableDownloadArmyReportPng = document.getElementById('enableDownloadArmyReportPng').checked;
+    const enableDownloadArmyReportHtm = document.getElementById('enableDownloadArmyReportHtm').checked;
+    
     const autoShowChangelog = document.getElementById('autoShowChangelog').checked;
 
     chrome.storage.local.set({
@@ -114,6 +143,11 @@ function saveOptions() {
         ninjutsuReportWebhookURL: ninjutsuReportWebhookURL,
         enableDownloadNinjutsuReportPng: enableDownloadNinjutsuReportPng,
         enableDownloadNinjutsuReportHtm: enableDownloadNinjutsuReportHtm,
+        enableArmyReportPng: enableArmyReportPng,
+        enableArmyReportHtm: enableArmyReportHtm,
+        armyReportWebhookURL: armyReportWebhookURL,
+        enableDownloadArmyReportPng: enableDownloadArmyReportPng,
+        enableDownloadArmyReportHtm: enableDownloadArmyReportHtm,
         autoShowChangelog: autoShowChangelog
     }, () => {
         // Actualizar el estado para informar al usuario
@@ -142,6 +176,11 @@ function restoreOptions() {
         ninjutsuReportWebhookURL: '',
         enableDownloadNinjutsuReportPng: false,
         enableDownloadNinjutsuReportHtm: false,
+        enableArmyReportPng: false,
+        enableArmyReportHtm: false,
+        armyReportWebhookURL: '',
+        enableDownloadArmyReportPng: false,
+        enableDownloadArmyReportHtm: false,
         autoShowChangelog: true
     }, (items) => {
         document.getElementById('currentUser').value = items.currentUser;
@@ -165,6 +204,15 @@ function restoreOptions() {
 
         document.getElementById('enableDownloadNinjutsuReportPng').checked = items.enableDownloadNinjutsuReportPng;
         document.getElementById('enableDownloadNinjutsuReportHtm').checked = items.enableDownloadNinjutsuReportHtm;
+
+        document.getElementById('enableArmyReportPng').checked = items.enableArmyReportPng;
+        document.getElementById('enableArmyReportHtm').checked = items.enableArmyReportHtm;
+        document.getElementById('armyReportWebhookURL').value = items.armyReportWebhookURL;
+        document.getElementById('armyReportWebhookURL').disabled = !(items.enableArmyReportPng || items.enableArmyReportHtm);
+
+        document.getElementById('enableDownloadArmyReportPng').checked = items.enableDownloadArmyReportPng;
+        document.getElementById('enableDownloadArmyReportHtm').checked = items.enableDownloadArmyReportHtm;
+        
         document.getElementById('autoShowChangelog').checked = items.autoShowChangelog;
 
         validateInputs();

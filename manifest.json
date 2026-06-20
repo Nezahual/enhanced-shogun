@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Enhanced Shogun",
-  "version": "1.3.1",
+  "version": "1.4",
   "description": "Extensión para el envío de reportes de batallas y espionajes de ShogunsReturn a Discord.",
   "permissions": [
     "storage",
@@ -21,10 +21,12 @@
       ],
       "js": [
         "libs/dom-to-image-more.min.js",
+        "utils.js",
         "shared.js",
         "spies.js",
         "battles.js",
         "ninjutsu.js",
+        "armies.js",
         "main.js"
       ],
       "css": [

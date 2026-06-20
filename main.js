@@ -20,6 +20,12 @@ const observer = new MutationObserver(() => {
             injectNinjutsuBtns();
         }
     }
+    if (config.enableArmyReportPng || config.enableDownloadArmyReportPng
+        || config.enableArmyReportHtm || config.enableDownloadArmyReportHtm) {
+        if (typeof injectArmiesBtns === 'function') {
+            injectArmiesBtns();
+        }
+    }
 });
 
 // Observamos todo el body para detectar cuando el framework (React/Vue/etc.)

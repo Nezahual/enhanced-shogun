@@ -220,10 +220,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const formData = new FormData();
     formData.append("file", imageBlob, 'ArmyReport.png');
 
-    const sourceUser = document.querySelector('h3.max-w-full.shrink-0.break-words.text-2xl.font-bold.leading-tight.text-white').innerText;
-
     formData.append('payload_json', JSON.stringify({
-      content: `**${currentUser}** ha compartido un reporte de ejércitos de la provincia de **${sourceUser}**:`
+      content: `**${currentUser}** ha compartido un reporte de ejércitos de la provincia de **${request.sourceUser}**:`
     }));
 
     fetch(armyReportWebhookURL, {
@@ -253,10 +251,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const formData = new FormData();
     formData.append("file", htmlBlob, 'ArmyReport.htm');
 
-    const sourceUser = document.querySelector('h3.max-w-full.shrink-0.break-words.text-2xl.font-bold.leading-tight.text-white').innerText;
-
     formData.append('payload_json', JSON.stringify({
-      content: `**${currentUser}** ha compartido un reporte de ejércitos de la provincia de **${sourceUser}**:`
+      content: `**${currentUser}** ha compartido un reporte de ejércitos de la provincia de **${request.sourceUser}**:`
     }));
 
     fetch(armyReportWebhookURL, {

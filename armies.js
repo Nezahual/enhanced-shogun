@@ -38,7 +38,8 @@ function createArmyPngWebhookBtn() {
 
                 chrome.runtime.sendMessage({
                     action: "sendArmyReportPng",
-                    imageData: dataUrl
+                    imageData: dataUrl,
+                    sourceUser: document.querySelector('h3.max-w-full.shrink-0.break-words.text-2xl.font-bold.leading-tight.text-white').innerText
                 }, (response) => {
                     if (response && response.success) {
                         btn.textContent = '¡Enviado!';
@@ -143,7 +144,8 @@ function createArmyHtmWebhookBtn() {
 
         chrome.runtime.sendMessage({
             action: "sendArmyReportHtm",
-            html: htmlCompleto
+            html: htmlCompleto,
+            sourceUser: document.querySelector('h3.max-w-full.shrink-0.break-words.text-2xl.font-bold.leading-tight.text-white').innerText
         }, (response) => {
             if (response && response.success) {
                 btn.textContent = '¡Enviado!';

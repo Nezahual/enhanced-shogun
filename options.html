@@ -36,20 +36,24 @@
                 <h2>Reportes de Espionaje</h2>
                 <div class="form-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="enableSpyReport">
-                        <span>Habilitar Webhook</span>
-                    </label>
-                    <div class="input-container">
-                        <label for="spyReportWebhookURL" class="sub-label">URL del Webhook</label>
-                        <input type="text" id="spyReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="checkbox-label">
                         <input type="checkbox" id="enableDownloadSpyReport">
                         <span>Mostrar botón para descargar reporte (.htm)</span>
                     </label>
                 </div>
+                <fieldset class="webhook-container">
+                    <legend>Envío por Webhook</legend>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableSpyReport">
+                            <span>Mostrar botón de envío a Discord</span>
+                        </label>
+                        <div class="input-container">
+                            <label for="spyReportWebhookURL" class="sub-label">URL del Webhook</label>
+                            <input type="text" id="spyReportWebhookURL"
+                                placeholder="https://discord.com/api/webhooks/...">
+                        </div>
+                    </div>
+                </fieldset>
             </div>
 
             <!-- Tarjeta Batallas -->
@@ -57,41 +61,29 @@
                 <h2>Reportes de Batalla</h2>
                 <div class="form-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="enableBattleReport">
-                        <span>Habilitar Webhook</span>
-                    </label>
-                    <div class="input-container">
-                        <label for="battleReportWebhookURL" class="sub-label">URL del Webhook</label>
-                        <input type="text" id="battleReportWebhookURL"
-                            placeholder="https://discord.com/api/webhooks/...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="checkbox-label">
                         <input type="checkbox" id="enableCopyBattleReport">
                         <span>Mostrar botón para copiar enlace</span>
                     </label>
                 </div>
+                <fieldset class="webhook-container">
+                    <legend>Envío por Webhook</legend>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableBattleReport">
+                            <span>Mostrar botón de envío a Discord</span>
+                        </label>
+                        <div class="input-container">
+                            <label for="battleReportWebhookURL" class="sub-label">URL del Webhook</label>
+                            <input type="text" id="battleReportWebhookURL"
+                                placeholder="https://discord.com/api/webhooks/...">
+                        </div>
+                    </div>
+                </fieldset>
             </div>
 
             <!-- Tarjeta Ninjutsu -->
             <div class="card">
                 <h2>Reportes de misiones Ninjutsu</h2>
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="enableNinjutsuReportPng">
-                        <span>Habilitar Webhook (.png)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="enableNinjutsuReportHtm">
-                        <span>Habilitar Webhook (.htm)</span>
-                    </label>
-                    <div class="input-container">
-                        <label for="ninjutsuReportWebhookURL" class="sub-label">URL del Webhook</label>
-                        <input type="text" id="ninjutsuReportWebhookURL"
-                            placeholder="https://discord.com/api/webhooks/...">
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="enableDownloadNinjutsuReportPng">
@@ -102,25 +94,29 @@
                         <span>Mostrar botón para descargar reporte (.htm)</span>
                     </label>
                 </div>
+                <fieldset class="webhook-container">
+                    <legend>Envío por Webhook</legend>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableNinjutsuReportPng">
+                            <span>Mostrar botón de envío a Discord (.png)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableNinjutsuReportHtm">
+                            <span>Mostrar botón de envío a Discord (.htm)</span>
+                        </label>
+                        <div class="input-container">
+                            <label for="ninjutsuReportWebhookURL" class="sub-label">URL del Webhook</label>
+                            <input type="text" id="ninjutsuReportWebhookURL"
+                                placeholder="https://discord.com/api/webhooks/...">
+                        </div>
+                    </div>
+                </fieldset>
             </div>
 
             <!-- Tarjeta Ejércitos -->
             <div class="card">
                 <h2>Reportes de Ejércitos</h2>
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="enableArmyReportPng">
-                        <span>Habilitar Webhook (.png)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="enableArmyReportHtm">
-                        <span>Habilitar Webhook (.htm)</span>
-                    </label>
-                    <div class="input-container">
-                        <label for="armyReportWebhookURL" class="sub-label">URL del Webhook</label>
-                        <input type="text" id="armyReportWebhookURL" placeholder="https://discord.com/api/webhooks/...">
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="enableDownloadArmyReportPng">
@@ -131,6 +127,24 @@
                         <span>Mostrar botón para descargar reporte (.htm)</span>
                     </label>
                 </div>
+                <fieldset class="webhook-container">
+                    <legend>Envío por Webhook</legend>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableArmyReportPng">
+                            <span>Mostrar botón de envío a Discord (.png)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableArmyReportHtm">
+                            <span>Mostrar botón de envío a Discord (.htm)</span>
+                        </label>
+                        <div class="input-container">
+                            <label for="armyReportWebhookURL" class="sub-label">URL del Webhook</label>
+                            <input type="text" id="armyReportWebhookURL"
+                                placeholder="https://discord.com/api/webhooks/...">
+                        </div>
+                    </div>
+                </fieldset>
             </div>
         </div>
 

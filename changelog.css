@@ -99,3 +99,12 @@ h1 {
     background-color: #FEE75C;
     color: #2c2f33;
 }
+
+.badge.star {
+    background-color: #5865F2;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(88, 101, 242, 0.3);
+}

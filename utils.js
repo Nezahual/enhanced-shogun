@@ -37,6 +37,13 @@ function generateReportImage(reportElement) {
     });
 }
 
+function cleanResourceUrls(html) {
+    return html
+        .replace(/images\/logo-[a-fA-F0-9]+\.png(?:\?vsn=[a-zA-Z0-9_]+)?/g, 'images/logo.png')
+        .replace(/assets\/css\/app-[a-fA-F0-9]+\.css(?:\?vsn=[a-zA-Z0-9_]+)?/g, 'assets/css/app.css')
+        .replace(/assets\/js\/app-[a-fA-F0-9]+\.js(?:\?vsn=[a-zA-Z0-9_]+)?/g, 'assets/js/app.js');
+}
+
 function getReportHTML(reportElement) {
     const clon = document.createElement('html');
     const headClon = document.head.cloneNode(true);
@@ -60,5 +67,5 @@ function getReportHTML(reportElement) {
         }
     });
 
-    return '<!DOCTYPE html>\n' + clon.outerHTML;
+    return cleanResourceUrls('<!DOCTYPE html>\n' + clon.outerHTML);
 }
